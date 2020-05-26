@@ -264,14 +264,11 @@ class KallsymsFinder:
                 continue
             
             candidates_offsets.append(position)
-        
-        if len(candidates_offsets) != 1:
-            
-            if len(candidates_offsets) == 0:
-                raise KallsymsNotFoundException('%d candidates for kallsyms_token_table in kernel image' % len(candidates_offsets))
-            else:
-                raise ValueError('%d candidates for kallsyms_token_table in kernel image' % len(candidates_offsets))
-        
+
+        if not candidates_offsets:
+            raise KallsymsNotFoundException('%d candidates for kallsyms_token_table in kernel image' % len(candidates_offsets))
+
+        # In case we got multiple matches, proceed with the first match and Ignore the rest.
         position = candidates_offsets[0]
         
         # Get back to the beginning of the table
